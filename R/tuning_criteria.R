@@ -70,8 +70,9 @@ select_lambda_hbic <- function(qr_fit, threshold = NULL, HBIC.min = NULL) {
     coeffs <- qr_fit$models[[1]]$coefficients[-1, , drop = FALSE]
     n_nonzero <- apply(coeffs, 2, function(x) sum(abs(x) > threshold))
   }
-  HBIC <- log(fit_rho * n) + n_nonzero * log(log(p)) * log(n) / n
-  #print(cbind(qr_fit$lambda,log(fit_rho * n),n_nonzero * log(log(p)) * log(n) / n,HBIC))
+
+  HBIC <- hbic_core(Rho = fit_rho, NR = n, nvar = n_nonzero, p = p, n = n)
+
   lambda_selected <- qr_fit$lambda[which.min(HBIC)]
 
   if (!is.null(HBIC.min)) {

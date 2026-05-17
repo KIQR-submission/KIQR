@@ -17,14 +17,13 @@ solver_pgd <- function(beta, Y, X, Y_p, tau, gamma, zeta, tol, max_iter, lambda,
   beta_fit <- beta
 
   # Step size calculation
-  xi <- 2 * colSums(X^2) / (n * gamma) #used to be 2 and 30
+  xi <- 30 * colSums(X^2) / (p * n * gamma) #used to be 2
   xi[xi <= 1e-8] <- 1e-6 # Ensure step sizes are positive and non-zero
 
   for (i in 1:max_iter) {
     beta_old <- beta_fit
     #browser()
-    #print(length(which(beta_old!=0)))
-    #print(beta_old[which(beta_old!=0)])
+    #print(beta_old[1:40])
     # Calculate residuals and gradients of the smooth loss part
     Y_fit <- X %*% beta_fit
     residual_obs <- Y - Y_fit
